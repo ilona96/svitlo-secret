@@ -37,7 +37,8 @@
         body.state-light {
             background-color: var(--color-beige);
             color: var(--color-brown);
-            transition: background-color 1.5s ease-in-out;
+            transition: background-color 3s ease-in-out;
+            /* Slower transition */
         }
 
         /* Container */
@@ -60,6 +61,16 @@
             position: relative;
             z-index: 10;
             transition: transform 0.3s ease;
+            margin-bottom: 60px;
+            /* Lifted up away from text */
+        }
+
+        /* Candle Disappears in Light State */
+        body.state-light .candle-wrapper {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease 1.5s;
+            /* Wait 1.5s (burn), then fade out over 2s */
         }
 
         .candle-wrapper:active {
@@ -98,11 +109,12 @@
 
         /* Initial Text */
         .intro-text {
-            margin-top: 40px;
+            /* margin-top removed, controlled by flex gap/margin */
             font-size: 1.2rem;
             letter-spacing: 1px;
             opacity: 1;
-            transition: opacity 0.5s;
+            transition: opacity 1s;
+            /* Slower fade out */
         }
 
         body.state-light .intro-text {
@@ -117,13 +129,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -40%);
-            /* Start slightly lower */
             width: 90%;
             max-width: 400px;
             opacity: 0;
             pointer-events: none;
-            transition: all 1s ease 1s;
-            /* Delay 1s waiting for bg change */
+            transition: all 2s ease 2.5s;
+            /* Delay appearance until candle fades */
         }
 
         body.state-light .surprise-content {
@@ -188,29 +199,6 @@
             border-top: 1px solid rgba(62, 39, 35, 0.2);
             padding-top: 20px;
         }
-
-        /* Instructions Overlay hint */
-        .tap-hint {
-            position: absolute;
-            bottom: 50px;
-            font-size: 0.9rem;
-            opacity: 0.7;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                opacity: 0.4;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0.4;
-            }
-        }
     </style>
 </head>
 
@@ -236,11 +224,9 @@
         <!-- Initial State Text -->
         <div class="intro-text">
             Тут надто темно...<br>
-            Торкнись свічки.
+            Торкнись щоб запалити
         </div>
-        <div class="tap-hint intro-text">
-            (Tap to light)
-        </div>
+        <!-- Tap hint removed -->
 
         <!-- Surprise Content -->
         <div class="surprise-content">
@@ -277,11 +263,7 @@
             body.classList.remove('state-dark');
             body.classList.add('state-light');
 
-            // Move Candle Up slightly (optional effect)
-            // candle.style.transform = "translateY(-50px) scale(0.8)";
-            // Let's keep it centered but maybe fade it out or keep it as an icon?
-            // Let's keep it as the 'hero' icon top-center.
-            candle.style.transform = "translateY(-150px) scale(0.6)";
+            // Move Candle logic handled by CSS now
         }
     </script>
 </body>
