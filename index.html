@@ -56,13 +56,14 @@
         /* Candle SVG */
         .candle-wrapper {
             width: 150px;
-            height: 250px;
+            height: 300px;
+            /* Taller container to fit flame */
             cursor: pointer;
             position: relative;
             z-index: 10;
             transition: transform 0.3s ease;
-            margin-bottom: 60px;
-            /* Lifted up away from text */
+            margin-bottom: 80px;
+            /* More space between candle and text */
         }
 
         /* Candle Disappears in Light State */
@@ -213,8 +214,8 @@
 
         <!-- Candle Element -->
         <div class="candle-wrapper" id="candle">
-            <!-- Increased ViewBox -->
-            <svg class="candle-svg" viewBox="0 -30 100 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Increased ViewBox for Maximum Flame Visibility -->
+            <svg class="candle-svg" viewBox="0 -60 100 260" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <!-- Wax Body -->
                 <path d="M20 60 H80 V180 C80 190 70 200 50 200 C30 200 20 190 20 180 V60" fill="currentColor"
                     stroke="currentColor" stroke-width="2" />
