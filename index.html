@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Svitlo v tobi - Secret</title>
+    <style>
+        /* CSS Reset & Variables */
+        :root {
+            --color-brown: #3E2723;
+            --color-beige: #F5F5DC;
+            --color-gold: #FFD700;
+            --color-flame-core: #FF4500;
+            --anim-speed: 1.5s;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+            /* Elegant Serif */
+            overflow: hidden;
+            /* Prevent scrolling during animation */
+        }
+
+        /* State: DARK (Initial) */
+        body.state-dark {
+            background-color: var(--color-brown);
+            color: var(--color-beige);
+        }
+
+        /* State: LIGHT (After Click) */
+        body.state-light {
+            background-color: var(--color-beige);
+            color: var(--color-brown);
+            transition: background-color 1.5s ease-in-out;
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Candle SVG */
+        .candle-wrapper {
+            width: 150px;
+            height: 250px;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .candle-wrapper:active {
+            transform: scale(0.95);
+        }
+
+        .candle-svg path {
+            transition: fill 1s ease;
+        }
+
+        /* Flame Animation */
+        .flame {
+            opacity: 0;
+            transform-origin: center bottom;
+            transform: scale(0);
+            transition: all 1s ease-out;
+        }
+
+        body.state-light .flame {
+            opacity: 1;
+            transform: scale(1);
+            animation: flicker 1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% {
+                transform: scale(1) rotate(-2deg);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: scale(1.1) rotate(2deg);
+                opacity: 1;
+            }
+        }
+
+        /* Initial Text */
+        .intro-text {
+            margin-top: 40px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+
+        body.state-light .intro-text {
+            opacity: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        /* Surprise Content (Hidden Initially) */
+        .surprise-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            /* Start slightly lower */
+            width: 90%;
+            max-width: 400px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 1s ease 1s;
+            /* Delay 1s waiting for bg change */
+        }
+
+        body.state-light .surprise-content {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            pointer-events: auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Coupon Box */
+        .coupon-box {
+            border: 2px dashed var(--color-brown);
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(62, 39, 35, 0.05);
+            /* Slight tint */
+            border-radius: 10px;
+        }
+
+        .code {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            display: block;
+            margin-top: 10px;
+            user-select: all;
+        }
+
+        .cta-button {
+            background-color: var(--color-brown);
+            color: var(--color-beige);
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            display: inline-block;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(62, 39, 35, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Refill Note */
+        .refill-note {
+            font-size: 0.9rem;
+            margin-top: 30px;
+            opacity: 0.8;
+            border-top: 1px solid rgba(62, 39, 35, 0.2);
+            padding-top: 20px;
+        }
+
+        /* Instructions Overlay hint */
+        .tap-hint {
+            position: absolute;
+            bottom: 50px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.4;
+            }
+        }
+    </style>
+</head>
+
+<body class="state-dark" onclick="lightCandle()">
+
+    <div class="container">
+
+        <!-- Candle Element -->
+        <div class="candle-wrapper" id="candle">
+            <svg class="candle-svg" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Wax Body -->
+                <path d="M20 60 H80 V180 C80 190 70 200 50 200 C30 200 20 190 20 180 V60" fill="currentColor"
+                    stroke="currentColor" stroke-width="2" />
+                <!-- Wick -->
+                <path d="M50 60 V40" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                <!-- Flame Core (Hidden initially) -->
+                <path class="flame" d="M50 40 Q70 40 70 20 Q50 -10 30 20 Q30 40 50 40" fill="#FFD700" />
+                <path class="flame" d="M50 35 Q60 35 60 25 Q50 10 40 25 Q40 35 50 35" fill="#FF4500"
+                    style="opacity:0.7" />
+            </svg>
+        </div>
+
+        <!-- Initial State Text -->
+        <div class="intro-text">
+            Тут надто темно...<br>
+            Торкнись свічки.
+        </div>
+        <div class="tap-hint intro-text">
+            (Tap to light)
+        </div>
+
+        <!-- Surprise Content -->
+        <div class="surprise-content">
+            <h1>Ти знайшла світло! ✨</h1>
+            <p>Дякуємо, що ти з нами. Цей вогник тепер твій.</p>
+
+            <div class="coupon-box">
+                <small>Твій подарунок:</small><br>
+                <strong>-15% на дегустаційний сет</strong><br>
+                <span class="code">SVITLO_SECRET</span>
+            </div>
+
+            <p class="refill-note">
+                ♻️ <strong>Не викидай цю баночку!</strong><br>
+                Ми наповнимо її твоїм улюбленим ароматом знову.
+            </p>
+
+            <a href="https://instagram.com/svitlo_v_tobi_PLACEHOLDER" class="cta-button">Написати Саші</a>
+        </div>
+
+    </div>
+
+    <script>
+        let isLit = false;
+
+        function lightCandle() {
+            if (isLit) return; // Prevent re-triggering
+
+            isLit = true;
+            const body = document.body;
+            const candle = document.getElementById('candle');
+
+            // Trigger Animation
+            body.classList.remove('state-dark');
+            body.classList.add('state-light');
+
+            // Move Candle Up slightly (optional effect)
+            // candle.style.transform = "translateY(-50px) scale(0.8)";
+            // Let's keep it centered but maybe fade it out or keep it as an icon?
+            // Let's keep it as the 'hero' icon top-center.
+            candle.style.transform = "translateY(-150px) scale(0.6)";
+        }
+    </script>
+</body>
+
+</html>
