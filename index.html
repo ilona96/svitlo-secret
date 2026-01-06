@@ -35,7 +35,7 @@
 
         /* State: LIGHT (After Click) */
         body.state-light {
-            background-color: var(--color-beige);
+            background-color: #F5F5DC;
             color: var(--color-brown);
             transition: background-color 3s ease-in-out;
             /* Slower transition */
@@ -71,6 +71,11 @@
             pointer-events: none;
             transition: opacity 2s ease 1.5s;
             /* Wait 1.5s (burn), then fade out over 2s */
+        }
+
+        /* Fix Flame Clipping */
+        .candle-svg {
+            overflow: visible;
         }
 
         .candle-wrapper:active {
@@ -208,7 +213,8 @@
 
         <!-- Candle Element -->
         <div class="candle-wrapper" id="candle">
-            <svg class="candle-svg" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Increased ViewBox -->
+            <svg class="candle-svg" viewBox="0 -30 100 230" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <!-- Wax Body -->
                 <path d="M20 60 H80 V180 C80 190 70 200 50 200 C30 200 20 190 20 180 V60" fill="currentColor"
                     stroke="currentColor" stroke-width="2" />
@@ -226,7 +232,6 @@
             Тут надто темно...<br>
             Торкнись щоб запалити
         </div>
-        <!-- Tap hint removed -->
 
         <!-- Surprise Content -->
         <div class="surprise-content">
@@ -235,16 +240,17 @@
 
             <div class="coupon-box">
                 <small>Твій подарунок:</small><br>
-                <strong>-15% на дегустаційний сет</strong><br>
+                <strong>-15% на наступні 2 перезаливки</strong><br>
                 <span class="code">SVITLO_SECRET</span>
             </div>
 
             <p class="refill-note">
-                ♻️ <strong>Не викидай цю баночку!</strong><br>
+                ♻️ <strong>Ця баночка створена для вічного сяйва.</strong><br>
                 Ми наповнимо її твоїм улюбленим ароматом знову.
             </p>
 
-            <a href="https://instagram.com/svitlo_v_tobi_PLACEHOLDER" class="cta-button">Написати Саші</a>
+            <a href="https://www.instagram.com/alexandra_dolenko?igsh=MWhuM3V4YjZ5NDZyZw==" class="cta-button">Написати
+                Саші</a>
         </div>
 
     </div>
@@ -263,7 +269,7 @@
             body.classList.remove('state-dark');
             body.classList.add('state-light');
 
-            // Move Candle logic handled by CSS now
+            // Move Candle handled by CSS transition on opacity
         }
     </script>
 </body>
